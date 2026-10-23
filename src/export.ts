@@ -13,7 +13,13 @@ export async function buildPptx(project: Project) {
     slide.background = { color: s.background.slice(1) };
     slide.addNotes(s.notes);
     for (const e of s.elements) {
-      const box = { x: e.x / 96, y: e.y / 96, w: e.w / 96, h: e.h / 96 };
+      const box = {
+        x: e.x / 96,
+        y: e.y / 96,
+        w: e.w / 96,
+        h: e.h / 96,
+        rotate: (e.rotation + 360) % 360,
+      };
       if (e.kind === 'text')
         slide.addText(e.text, {
           ...box,
@@ -30,11 +36,25 @@ export async function buildPptx(project: Project) {
           lang: 'uz-UZ',
         });
       else if (e.kind === 'shape')
-        slide.addShape(e.shape === 'circle' ? pptx.ShapeType.ellipse : pptx.ShapeType.rect, {
-          ...box,
-          fill: { color: e.fill.slice(1) },
-          line: { color: e.fill.slice(1), transparency: 100 },
-        });
+        slide.addShape(
+          {
+            circle: pptx.ShapeType.ellipse,
+            triangle: pptx.ShapeType.triangle,
+            hexagon: pptx.ShapeType.hexagon,
+            diamond: pptx.ShapeType.diamond,
+            line: pptx.ShapeType.rect,
+            rect: pptx.ShapeType.rect,
+          }[e.shape],
+          {
+            ...box,
+            fill: { color: e.fill.slice(1), transparency: Math.round((1 - e.opacity) * 100) },
+            line: {
+              color: (e.stroke ?? e.fill).slice(1),
+              width: e.strokeWidth * 0.75,
+              transparency: e.strokeWidth ? Math.round((1 - e.opacity) * 100) : 100,
+            },
+          },
+        );
       else if (e.src) slide.addImage({ ...box, data: e.src, altText: e.alt });
     }
   }

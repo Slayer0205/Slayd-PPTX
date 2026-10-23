@@ -41,7 +41,7 @@ Mahalliy rejimga hisob yoki API kaliti kerak emas. Muharrir, IndexedDB autosave,
 - Slayd qo‘shish, nusxalash, tartiblash, 50 bosqichli undo/redo, IndexedDB autosave va JSON import/zaxira.
 - Mazmunni saqlaydigan 10 algoritmik dizayn varianti; AI natijasi deb ko‘rsatilmaydi.
 - Tahrirlanadigan PPTX, 1920×1080 PNG (oddiy slayd), brauzer orqali PDF. PDF oynasida fon ranglarini yoqing, kolontitullarni o‘chiring va “Save as PDF” tanlang.
-- Akademik, biznes, erkin va poster shablonlari, 20 tagacha shaxsiy shablon.
+- 16 yo‘nalishda 64 ta mavzuli shablon: har birida 6 slayd, alohida kompozitsiya, palitra, tipografika va tahrirlanadigan vektorlar. Qidiruv, mavzu tavsiyasi, to‘liq preview va saqlanadigan saralanganlar; qo‘shimcha asosiy/poster tuzilmalari va 20 tagacha shaxsiy shablon.
 - Jarayon bloklari va foydalanuvchi raqamlariga asoslangan diagrammalar; skrinshotdan ochiq belgilangan qo‘lda tiklash.
 - Qoidalar asosidagi sifat tahlili va SourceGuard evristikasi; tashqi manbalarni tasdiqlamaydi.
 - To‘liq ekran, klaviatura, taymer, qaydlar va lazerli namoyish.
@@ -50,6 +50,10 @@ Mahalliy rejimga hisob yoki API kaliti kerak emas. Muharrir, IndexedDB autosave,
 Tashqi xizmatlar ulanganda UI’dan Gemini chat/tool takliflari, taqdimot yaratish, quiz, tarjima preview, matn tahriri, spiker qaydlari va himoya mashqi chaqiriladi. Supabase bulut nusxalari, konflikt nazorati, ulashish, to‘lovlar va referral jarayoni ham ulangan, ammo haqiqiy xizmatlar bilan hali tekshirilmagan. Tafsilotlar: [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md).
 
 ## Tekshiruvlar
+
+64 ta shablon katalogi va yo‘nalishlari [TEMPLATE_CATALOG.md](TEMPLATE_CATALOG.md)da. **Shablonlar → mavzuni kiriting → shablonni ko‘ring → Shu shablonda yaratish**. Yangi loyiha oynasida ham mavzuga mos tanlov ishlaydi. Gemini’dan kelgan mazmun tanlangan shablon bilan bezatiladi; slaydlar soni va qaydlar saqlanadi. Tavsiya kalit so‘zlarga asoslangan va kalitsiz ishlaydi; u AI yaratgan fakt sifatida ko‘rsatilmaydi.
+
+![64 ta shablondan 16 namuna](docs/templates-overview.png)
 
 ```sh
 npm run typecheck

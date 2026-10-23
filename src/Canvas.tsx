@@ -104,6 +104,22 @@ export function Canvas({
                 textAlign: el.align,
                 background: el.kind === 'shape' ? el.fill : undefined,
                 borderRadius: el.shape === 'circle' && el.kind === 'shape' ? '50%' : undefined,
+                transform: el.rotation ? `rotate(${el.rotation}deg)` : undefined,
+                opacity: el.opacity,
+                border:
+                  el.kind === 'shape' && el.strokeWidth
+                    ? `${el.strokeWidth}px solid ${el.stroke ?? el.color}`
+                    : undefined,
+                clipPath:
+                  el.kind === 'shape'
+                    ? (
+                        {
+                          triangle: 'polygon(50% 0, 100% 100%, 0 100%)',
+                          hexagon: 'polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)',
+                          diamond: 'polygon(50% 0,100% 50%,50% 100%,0 50%)',
+                        } as Record<string, string>
+                      )[el.shape]
+                    : undefined,
               }}
               onPointerDown={(e) => begin(e, el)}
               onKeyDown={(e) => {

@@ -28,7 +28,7 @@ test('creates, edits, undoes, redesigns and restores a real project', async ({ p
   await page.getByRole('button', { name: 'Namoyish', exact: true }).click();
   await expect(page.locator('.presenter')).toBeVisible();
   await page.keyboard.press('ArrowRight');
-  await expect(page.locator('.presenter footer')).toContainText('2 / 5');
+  await expect(page.locator('.presenter footer')).toContainText('2 / 6');
   await page.getByTitle('Namoyishni yopish').click();
   expect(errors).toEqual([]);
 });

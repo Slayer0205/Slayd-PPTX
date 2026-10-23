@@ -10,6 +10,12 @@ React/Vite frontend mustaqil ishlaydi. `Project` versiyalangan Zod formatida 128
 
 `cloud.ts` faqat public Supabase client va foydalanuvchi JWT’si bilan ishlaydi. Bulutga saqlash hozir qo‘lda; `save_project` RPC expected revision’ni atomar tekshiradi. Mos kelmasa overwrite o‘rniga konflikt beradi. Bulutdan yuklash mahalliy farqli nusxani saqlaydi. Bu real-time hamkorlik yoki avtomatik cloud autosave emas.
 
+## Shablon mexanizmi
+
+`templateCatalog.ts` 16 yo‘nalishdagi 64 nomlangan dizayn va mavzu kalit so‘zlarini saqlaydi. `templates.ts` ularni mustaqil native matn va vektor elementlariga aylantiradi: cover, mazmun, jarayon/tahlil, xulosa va manbalar. Har bir preset 6 slayd beradi; 64 muqovaning rangdan mustaqil geometriya farqi test qilinadi. Native polygon, chiziq, chegara va rotation Canvas/PPTX’da mos render qilinadi.
+
+`TemplateGallery.tsx` kech yuklanadi; kartalar ekranga yaqinlashganda Canvas yaratiladi. Preview butun deck’ni ko‘rsatadi; favorites IndexedDB’da saqlanadi. Mavzu tavsiyasi deterministik Uzbek/Russian/English kalit so‘zlarini ishlatadi; u provayder chaqirmaydi. `Project.templateId` ixtiyoriy va eski JSON’lar bilan mos. AI deck’dan kelgan slayd soni, matn va qaydlar o‘zgartirilmaydi, dizayn mustaqil qo‘llanadi.
+
 ## AI oqimi
 
 1. UI kontekst va amallarni `/api/ai`ga bearer JWT bilan yuboradi.

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -43,6 +43,13 @@ import { resultSchema } from './aiSchema';
 import { deleteLocal, listLocal, loadValue, saveLocal, saveValue } from './storage';
 import { applyTool, type ToolCall } from './tools';
 import {
+  findTemplate,
+  recommendTemplates,
+  templateCatalog,
+  templateCategories,
+} from './templateCatalog';
+import { createTemplateProject, templateCover, templateGeneratedProject } from './templates';
+import {
   demoProject,
   element,
   historyCommit,
@@ -58,6 +65,7 @@ import {
   type Project,
 } from './domain';
 const Referrals = lazy(() => import('./Referrals'));
+const TemplateGallery = lazy(() => import('./TemplateGallery'));
 const Payments = lazy(() => import('./Payments'));
 const Assistant = lazy(() => import('./Assistant').then((m) => ({ default: m.Assistant })));
 const downloadModule = () => import('./export');
@@ -103,7 +111,7 @@ export default function App() {
     }
   });
   const [newTitle, setNewTitle] = useState(''),
-    [template, setTemplate] = useState('academic'),
+    [template, setTemplate] = useState('auto'),
     [query, setQuery] = useState(''),
     [toast, setToast] = useState(''),
     [saveStatus, setSaveStatus] = useState('Yuklanmoqda…'),
@@ -116,7 +124,20 @@ export default function App() {
     [authReady, setAuthReady] = useState(!supabase),
     [shareUrl, setShareUrl] = useState(''),
     [aiTopic, setAiTopic] = useState(''),
-    [aiCount, setAiCount] = useState(5);
+    [aiCount, setAiCount] = useState(5),
+    [aiTemplate, setAiTemplate] = useState('auto');
+  const chosenTemplate = useMemo(
+    () =>
+      template === 'auto' ? recommendTemplates(newTitle, 1)[0]?.template : findTemplate(template),
+    [template, newTitle],
+  );
+  const chosenPreview = useMemo(
+    () =>
+      modal && chosenTemplate
+        ? templateCover(chosenTemplate, newTitle || chosenTemplate.name)
+        : undefined,
+    [modal, chosenTemplate, newTitle],
+  );
   const [publicProject, setPublicProject] = useState<Project>(),
     [publicError, setPublicError] = useState('');
   const project = history.present;
@@ -285,14 +306,19 @@ export default function App() {
       notify('Loyihani saqlab bo‘lmadi. Avval JSON nusxa oling.');
     }
   };
-  function newModal(kind = 'academic') {
+  function newModal(kind = 'auto') {
     setTemplate(kind);
     setNewTitle('');
     setModal(true);
   }
   async function create(e: React.FormEvent) {
     e.preventDefault();
-    await open(newProject(newTitle.trim() || 'Yangi taqdimot', template));
+    const title = newTitle.trim() || 'Yangi taqdimot';
+    await open(
+      template === 'auto' || findTemplate(template)
+        ? createTemplateProject(title, template === 'auto' ? undefined : template)
+        : newProject(title, template),
+    );
     setModal(false);
   }
   async function importProject(file?: File) {
@@ -452,11 +478,11 @@ export default function App() {
           requestId: id(),
         }),
       ) as { title: string; slides: { title: string; bullets: string[]; notes: string }[] };
-      const p = newProject(result.title);
-      p.slides = result.slides.map((s, i) => ({
-        ...makeSlide(s.title, s.bullets.map((b) => '• ' + b).join('\n'), i),
-        notes: s.notes,
-      }));
+      const p = templateGeneratedProject(
+        aiTopic,
+        result,
+        aiTemplate === 'auto' ? undefined : aiTemplate,
+      );
       await open(p);
       notify('AI taqdimoti tayyor. Faktlar va manbalarni tekshiring.');
     } catch (e) {
@@ -929,14 +955,8 @@ export default function App() {
                 <div className="page">
                   <div className="page-heading">
                     <div>
-                      <span className="eyebrow">KUCHLI BOSHLANISH</span>
-                      <h1>
-                        G‘oyangizga mos tuzilma<span>.</span>
-                      </h1>
-                      <p>
-                        Universitet talablariga moslang. Bu shablonlar umumiy tavsiyalar asosida
-                        tayyorlangan.
-                      </p>
+                      <span className="eyebrow">DIZAYN KUTUBXONASI</span>
+                      <p>Shablon tanlang yoki joriy dizayningizni saqlang.</p>
                     </div>
                     <button
                       onClick={() => {
@@ -960,27 +980,18 @@ export default function App() {
                       Joriy dizaynni saqlash
                     </button>
                   </div>
-                  <div className="template-grid">
-                    {templateInfo.map(([kind, title, desc, tag], i) => (
-                      <button
-                        className={`template-card template-${i}`}
-                        key={kind}
-                        onClick={() => newModal(kind)}
-                      >
-                        <div className="template-preview">
-                          <span>{tag}</span>
-                          <h2>{title}</h2>
-                          <i />
-                          <small>SLIDECRAFT COLLECTION / 0{i + 1}</small>
-                        </div>
-                        <div>
-                          <strong>{title}</strong>
-                          <p>{desc}</p>
-                          <ArrowRight size={18} />
-                        </div>
-                      </button>
-                    ))}
-                  </div>
+                  <Suspense
+                    fallback={
+                      <div className="catalog-loading">Shablonlar kutubxonasi ochilmoqda…</div>
+                    }
+                  >
+                    <TemplateGallery
+                      onChoose={(id, topic) => {
+                        newModal(id);
+                        setNewTitle(topic);
+                      }}
+                    />
+                  </Suspense>
                   {!!customTemplates.length && (
                     <>
                       <div className="section-heading" style={{ marginTop: 32 }}>
@@ -1146,6 +1157,36 @@ export default function App() {
                       />
                     </label>
                     <label>
+                      Taqdimot dizayni
+                      <select
+                        aria-label="AI taqdimoti shabloni"
+                        value={aiTemplate}
+                        onChange={(e) => setAiTemplate(e.target.value)}
+                      >
+                        <option value="auto">Mavzuga mos avtomatik tanlash</option>
+                        {templateCategories.map((c) => (
+                          <optgroup label={c.name} key={c.id}>
+                            {templateCatalog
+                              .filter((t) => t.category === c.id)
+                              .map((t) => (
+                                <option value={t.id} key={t.id}>
+                                  {t.name}
+                                </option>
+                              ))}
+                          </optgroup>
+                        ))}
+                      </select>
+                      <small>
+                        {
+                          (aiTemplate === 'auto'
+                            ? recommendTemplates(aiTopic, 1)[0]?.template
+                            : findTemplate(aiTemplate)
+                          )?.name
+                        }{' '}
+                        · {templateCatalog.length} ta dizayndan tanlanadi
+                      </small>
+                    </label>
+                    <label>
                       Slaydlar soni
                       <input
                         type="number"
@@ -1286,15 +1327,42 @@ export default function App() {
                 />
               </label>
               <label>
-                Boshlang‘ich tuzilma
-                <select value={template} onChange={(e) => setTemplate(e.target.value)}>
-                  {templateInfo.map(([k, t]) => (
-                    <option key={k} value={k}>
-                      {t}
-                    </option>
+                Taqdimot dizayni
+                <select
+                  aria-label="Taqdimot shabloni"
+                  value={template}
+                  onChange={(e) => setTemplate(e.target.value)}
+                >
+                  <option value="auto">Mavzuga mos avtomatik tanlash</option>
+                  <optgroup label="Asosiy tuzilmalar">
+                    {templateInfo.map(([k, t]) => (
+                      <option key={k} value={k}>
+                        {t}
+                      </option>
+                    ))}
+                  </optgroup>
+                  {templateCategories.map((c) => (
+                    <optgroup label={c.name} key={c.id}>
+                      {templateCatalog
+                        .filter((t) => t.category === c.id)
+                        .map((t) => (
+                          <option value={t.id} key={t.id}>
+                            {t.name}
+                          </option>
+                        ))}
+                    </optgroup>
                   ))}
                 </select>
               </label>
+              {chosenPreview && chosenTemplate && (
+                <div className="create-template-preview">
+                  <Canvas slide={chosenPreview} />
+                  <div>
+                    <strong>{chosenTemplate.name}</strong>
+                    <small>{chosenTemplate.categoryName} · 6 tahrirlanadigan slayd</small>
+                  </div>
+                </div>
+              )}
               <button className="primary wide" type="submit">
                 Ijodni boshlash
                 <ArrowRight size={17} />

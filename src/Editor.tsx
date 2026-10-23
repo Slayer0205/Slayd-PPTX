@@ -18,6 +18,8 @@ import {
   Check,
 } from 'lucide-react';
 import { Canvas } from './Canvas';
+import { findTemplate } from './templateCatalog';
+import { templateContent } from './templates';
 import {
   element,
   id,
@@ -202,7 +204,14 @@ export function Editor({
                 ...project,
                 slides: [
                   ...project.slides,
-                  makeSlide('Yangi slayd', 'Asosiy fikringiz', project.slides.length),
+                  project.templateId && findTemplate(project.templateId) && project.height === 720
+                    ? templateContent(
+                        findTemplate(project.templateId)!,
+                        'Yangi slayd',
+                        ['Asosiy fikringizni kiriting.'],
+                        project.slides.length,
+                      )
+                    : makeSlide('Yangi slayd', 'Asosiy fikringiz', project.slides.length),
                 ],
               });
               setIndex(project.slides.length);
@@ -434,6 +443,9 @@ export function Editor({
                         <option value="rect">To‘rtburchak</option>
                         <option value="circle">Doira</option>
                         <option value="line">Chiziq</option>
+                        <option value="triangle">Uchburchak</option>
+                        <option value="hexagon">Olti burchak</option>
+                        <option value="diamond">Romb</option>
                       </select>
                     </label>
                     <label>

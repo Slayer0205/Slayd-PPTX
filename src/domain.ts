@@ -9,8 +9,8 @@ export const elementSchema = z.object({
   role: z.enum(['title', 'body', 'decoration', 'visual']).default('body'),
   x: z.number().min(0).max(W),
   y: z.number().min(0).max(1800),
-  w: z.number().min(16).max(W),
-  h: z.number().min(16).max(1800),
+  w: z.number().min(1).max(W),
+  h: z.number().min(1).max(1800),
   text: z.string().max(12000).default(''),
   color: colorSchema.default('#102e28'),
   fill: colorSchema.default('#d8eee6'),
@@ -18,7 +18,11 @@ export const elementSchema = z.object({
   bold: z.boolean().default(false),
   align: z.enum(['left', 'center', 'right']).default('left'),
   fontFamily: z.enum(['Arial', 'Georgia', 'Courier New']).default('Arial'),
-  shape: z.enum(['rect', 'circle', 'line']).default('rect'),
+  shape: z.enum(['rect', 'circle', 'line', 'triangle', 'hexagon', 'diamond']).default('rect'),
+  rotation: z.number().min(-180).max(180).default(0),
+  opacity: z.number().min(0).max(1).default(1),
+  stroke: colorSchema.optional(),
+  strokeWidth: z.number().min(0).max(12).default(0),
   locked: z.boolean().default(false),
   src: z
     .string()
@@ -43,6 +47,7 @@ export const projectSchema = z
     title: z.string().min(1).max(160),
     updatedAt: z.iso.datetime(),
     height: z.union([z.literal(720), z.literal(1800)]).default(720),
+    templateId: z.string().max(100).optional(),
     slides: z.array(slideSchema).min(1).max(100),
   })
   .superRefine((p, ctx) => {

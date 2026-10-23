@@ -16,7 +16,7 @@ O‘zgartirishlardan oldin `feat/slidecraft-ultimate` branch yaratildi va boshla
 | Studio           | Mustaqil matn/shakl/rasmlar, drag, resize, rang/font/alignment, qatlam, qulf, nusxa/o‘chirish, slayd tartibi, 8 px qadam va grid   |
 | Tarix va saqlash | 50 undo/redo holati, atomar tool tahriri, IndexedDB autosave, reload’dan tiklash, JSON import/export                               |
 | Dizayn           | 10 turli maket, preview/apply/undo, mazmun saqlanishi; algoritmik ekanligi ko‘rsatiladi                                            |
-| Shablonlar       | Akademik/biznes/erkin/poster, 20 tagacha shaxsiy preset, yangi loyiha sifatida qayta ochish                                        |
+| Shablonlar       | 16 yo‘nalishdagi 64 dizayn × 6 slayd; mavzu tavsiyasi, filtr/qidiruv, preview, favorites; asosiy/poster va 20 shaxsiy preset       |
 | Vizual           | Jarayon bloklari va foydalanuvchi kiritgan sonlardan ustunli diagramma; skrinshotdan ochiq belgilangan qo‘lda tiklash              |
 | Eksport          | Tahrirlanadigan PPTX XML/geometriya/qayd/rasm testi, brauzer PPTX va JSON download, 1920×1080 PNG, uch sahifali mazmunli PDF       |
 | Namoyish         | Alohida editor boshqaruvlarisiz sahna, klaviatura, taymer, progress, qaydlar va lazer                                              |
@@ -56,14 +56,20 @@ Bu bo‘limdagi mahalliy SQL/mocked API testlarining o‘tishi hosted Supabase, 
 
 ## Bajarilgan tekshiruvlar
 
-- `npm test`: **41 passed**, 5 test fayli; 0 failed/skipped.
-- `npm run test:e2e`: **9 passed**, Chromium desktop va mobil viewport; 0 failed/skipped.
+- `npm test`: **123 passed**, 6 test fayli; 0 failed/skipped. Barcha 64 shablonning sxemasi va ranglardan mustaqil geometriya farqi tekshirildi.
+- `npm run test:e2e`: **15 passed**, Chromium desktop va mobil viewport; 0 failed/skipped. 384 slayd va uzun sarlavhali muqovalardagi matnlarning haqiqiy brauzerda blokka sig‘ishi ham tekshirildi.
 - `npm run build`: TypeScript va production Vite bundle muvaffaqiyatli.
 - Saqlanadigan install script qayta bajarildi: frozen `npm ci` va build muvaffaqiyatli.
 - `wrangler pages functions build`: Worker bundle muvaffaqiyatli.
 - Wrangler Pages dev’da `/` → 200, `GET /api/ai` → 405; konfiguratsiyasiz AI/payments/Telegram → aniq 503. Bu tashqi integratsiya testi emas.
 - PDF `pdftotext` bilan o‘qildi: uch slayd matni mavjud; `pdfinfo`: 3 sahifa, 960×540 pt.
 - `npm audit`: **0 vulnerabilities** (tekshiruv sanasida).
+
+## Shablonlar yangilanishi
+
+64 ta shablon, har biri 6 slayddan, 16 mavzu guruhida ishlaydi. Eski to‘rtta umumiy kartochka o‘rniga haqiqiy Canvas preview’li katalog qo‘shildi. Mavzu nomi orqali mos tavsiya, category/search filtrlari, IndexedDB favorites, 6 slaydli preview va shu dizaynda loyiha yaratish UI’ga ulangan. Yangi slayd qo‘shilganda `templateId` orqali tanlangan uslub davom etadi. AI qaytargan slaydlar ham shu dizaynga o‘tadi; slaydlar soni/quota, barcha bullet matnlari va speaker notes o‘zgarmaydi.
+
+Sxemaga ixtiyoriy `templateId`, native triangle/hexagon/diamond, aylantirish va chegara chizig‘i qo‘shildi. Oldingi `schemaVersion:1` hujjatlar ochiladi; SQL migratsiya talab etilmaydi. PNG/Canvas va PPTX bir xil native elementlarga tayanadi. Mavzu tavsiyasi deterministik kalit so‘zlar bilan ishlaydi. Mahalliy shablonlar mavzuga mos reja va tahrirlanadigan ko‘rsatmalar beradi; haqiqiy AI fakt mazmuni uchun server Gemini integratsiyasi kerak.
 
 ## Cloud muhit konfiguratsiyasi
 
