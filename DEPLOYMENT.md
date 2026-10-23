@@ -1,6 +1,6 @@
 # Preview va qaytarish
 
-Hozircha hech qanday deploy, remote push, bank operatsiyasi yoki production migratsiyasi bajarilmagan. Kod `feat/slidecraft-ultimate` development branch’ida. Boshlang‘ich bo‘sh checkout zaxirasi `/workspace/slidecraft-audit/before-implementation.tar.gz`da. Eski production loyiha o‘zgarmagan.
+Hozircha hech qanday deploy, bank operatsiyasi yoki production migratsiyasi bajarilmagan. Foydalanuvchining alohida so‘rovi bilan kod GitHub’dagi `Slayer0205/Slayd-PPTX` repozitoriysining `feat/slidecraft-ultimate` development branchiga yuborilgan. `main` branchiga push bajarilmagan. Boshlang‘ich bo‘sh checkout zaxirasi `/workspace/slidecraft-audit/before-implementation.tar.gz`da. Eski production loyiha o‘zgarmagan.
 
 ## Preview tayyorlash
 

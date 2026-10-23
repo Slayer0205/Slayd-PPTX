@@ -2,6 +2,19 @@
 
 Laziz Xayrulloyev uchun yangi React/TypeScript taqdimot studiyasi. Mavjud checkout va masofaviy repozitoriy bo‘sh bo‘lgani sababli, foydalanuvchining “O‘zing yangi yarat” ruxsati bilan boshidan yaratildi. Eski production saytidan kod yoki ma’lumot olinmadi.
 
+## GitHub’dan olish
+
+[Loyiha kodi — feat/slidecraft-ultimate](https://github.com/Slayer0205/Slayd-PPTX/tree/feat/slidecraft-ultimate) · [ZIP arxivini yuklash](https://github.com/Slayer0205/Slayd-PPTX/archive/refs/heads/feat/slidecraft-ultimate.zip)
+
+Yoki Git bilan:
+
+```sh
+git clone --branch feat/slidecraft-ultimate https://github.com/Slayer0205/Slayd-PPTX.git
+cd Slayd-PPTX
+```
+
+Repozitoriy private bo‘lsa, unga ruxsati bor GitHub hisobingiz bilan kiring. Arxivda manba kodi, testlar, migratsiyalar va hujjatlar bor; maxfiy kalitlar va `node_modules` kiritilmagan.
+
 ## Tez boshlash
 
 Node **24.19.0** (kamida 22.12) va npm kerak. Loyiha katalogida:

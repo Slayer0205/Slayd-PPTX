@@ -6,7 +6,7 @@ Sana: 2026-10-23. Holat: ishlaydigan mahalliy development versiyasi; production 
 
 `Slayer0205/Slayd-PPTX` checkouti ham, masofaviy Git ref’lari ham bo‘sh edi. Mavjud React kodi, manifest, migration yoki Windows loyihasi bu mashinada topilmadi. Foydalanuvchi keyin **“O‘zing yangi yarat”** deb yangi loyiha yaratishga ruxsat berdi. Shu sababli bu eski v0.7.x tijoriy loyihaga patch emas; yangi amalga oshirishdir.
 
-O‘zgartirishlardan oldin `feat/slidecraft-ultimate` branch yaratildi va boshlang‘ich checkout tashqaridagi `before-implementation.tar.gz`ga arxivlanib tekshirildi. Eski production ma’lumotlari, deployment va kalitlar o‘zgartirilmadi. Remote push yoki commit bajarilmadi; yangi kod ishchi katalogda.
+O‘zgartirishlardan oldin `feat/slidecraft-ultimate` branch yaratildi va boshlang‘ich checkout tashqaridagi `before-implementation.tar.gz`ga arxivlanib tekshirildi. Eski production ma’lumotlari, deployment va kalitlar o‘zgartirilmadi. Foydalanuvchining alohida so‘rovi bilan loyiha commit qilinib, `Slayer0205/Slayd-PPTX` repozitoriysining `feat/slidecraft-ultimate` branchiga yuborildi. `main` branchiga push bajarilmadi.
 
 ## Bajarilgan va mahalliy tekshirilgan
 
@@ -69,7 +69,7 @@ Bu bo‘limdagi mahalliy SQL/mocked API testlarining o‘tishi hosted Supabase, 
 
 Draft saqlandi: to‘liq `install_script`, `start_skill`, Supabase public URL/key requirement nomlari va `GEMINI_API_KEY` secret talabi. Gemini uchun `generativelanguage.googleapis.com` domeni qo‘shildi. Kalit qiymatlari kiritilmadi. Supabase’ning aniq hostname’i noma’lumligi sababli service-role secret destination’i va shu domen allowlist’i hali sozlanmagan; wildcard o‘ylab topilmadi.
 
-Draft saqlash runtime qiymatlarini qo‘llamaydi yoki muhitni publish qilmaydi. Environment settings’da ko‘rib chiqish, saqlash va publish alohida foydalanuvchi amali. Yangi task’da snapshot restoration hali tekshirilmagan. Joriy kod remote’ga yuborilmagan; uni arxiv/Git orqali mustaqil saqlang.
+Draft saqlash runtime qiymatlarini qo‘llamaydi yoki muhitni publish qilmaydi. Environment settings’da ko‘rib chiqish, saqlash va publish alohida foydalanuvchi amali. Yangi task’da snapshot restoration hali tekshirilmagan. Kod GitHub’dagi `feat/slidecraft-ultimate` branchida saqlangan; uni Git yoki GitHub’ning Download ZIP funksiyasi orqali olish mumkin.
 
 ## Davom ettirish uchun aniq tartib
 
