@@ -1,0 +1,13 @@
+name = "slidecraft-ai-beta-uz"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-10-01"
+
+[[ratelimits]]
+name = "AI_RATE_LIMITER"
+namespace_id = "1001"
+simple = { limit = 12, period = 60 }
+
+[[ratelimits]]
+name = "PAYMENT_RATE_LIMITER"
+namespace_id = "1002"
+simple = { limit = 4, period = 60 }
